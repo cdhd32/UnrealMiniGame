@@ -13,40 +13,68 @@
 
 AMiniGamePlayerController::AMiniGamePlayerController()
 {
-	OwnerPawn = MakeShared<APawn>(GetPawn());
-	OwnerCharacter = MakeShared<ACharacter>(GetCharacter());
+
+}
+
+void AMiniGamePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OwnerPawn = GetPawn();
+	OwnerCharacter = GetCharacter();
 }
 
 void AMiniGamePlayerController::MoveForward(float Value)
 {
+	if (Value != 0.0f)
+	{
+		// find out which way is forward
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
+		// get forward vector
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		if (IsValid(OwnerPawn))
+			OwnerPawn->AddMovementInput(Direction, Value);
+	}
 }
 
 void AMiniGamePlayerController::MoveRight(float Value)
 {
+	if (Value != 0.0f)
+	{
+		// find out which way is right
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
+		// get right vector 
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		// add movement in that direction
+		if (IsValid(OwnerPawn))
+			OwnerPawn->AddMovementInput(Direction, Value);
+	}
 }
 
 void AMiniGamePlayerController::AddControllerYawInput(float Val)
 {
-//#checkpoint
-	if(OwnerPawn.IsValid())
-		OwnerPawn.Pin()->AddControllerYawInput(Val);
+	if(IsValid(OwnerPawn))
+		OwnerPawn->AddControllerYawInput(Val);
 }
 
 void AMiniGamePlayerController::AddControllerPitchInput(float Val)
 {
-
+	if (IsValid(OwnerPawn))
+		OwnerPawn->AddControllerPitchInput(Val);
 }
 
 void AMiniGamePlayerController::Jump()
 {
-
+	OwnerCharacter->Jump();
 }
 
 void AMiniGamePlayerController::StopJumping()
 {
-
+	OwnerCharacter->StopJumping();
 }
 
 void AMiniGamePlayerController::SetupInputComponent()
@@ -54,6 +82,7 @@ void AMiniGamePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	// Set up gameplay key bindings
+	check(InputComponent);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &AMiniGamePlayerController::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &AMiniGamePlayerController::StopJumping);
 
@@ -62,4 +91,9 @@ void AMiniGamePlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("Turn", this, &AMiniGamePlayerController::AddControllerYawInput);
 	InputComponent->BindAxis("LookUp", this, &AMiniGamePlayerController::AddControllerPitchInput);
+
+	
 }
+
+
+

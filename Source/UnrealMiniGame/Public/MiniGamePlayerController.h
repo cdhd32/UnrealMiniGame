@@ -14,11 +14,14 @@ class UNREALMINIGAME_API AMiniGamePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 protected:
-	TWeakPtr<APawn> OwnerPawn;
-	TWeakPtr<ACharacter> OwnerCharacter;
+	APawn* OwnerPawn = nullptr;
+	ACharacter* OwnerCharacter = nullptr;
+	//UAnimInstance* AnimInstance = nullptr;
+	USkeletalMeshComponent* SkeletalMesh = nullptr;
 public:
 	AMiniGamePlayerController();
-
+public:
+	virtual void BeginPlay() override;
 protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

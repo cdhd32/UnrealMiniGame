@@ -11,6 +11,15 @@ class UNREALMINIGAME_API AMiniGameCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnyWhere, Category = Collision)
+	class UCapsuleComponent* Capsule;
+
+	UPROPERTY(VisibleAnyWhere, Category = Visual)
+	class USkeletalMeshComponent* SkeletalMesh;
+
+	UPROPERTY(VisibleAnyWhere, Category = Movement)
+	class UCharacterMovementComponent* Movement;
+
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -18,9 +27,13 @@ class UNREALMINIGAME_API AMiniGameCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
-public:
-	// Sets default values for this character's properties
-	AMiniGameCharacter();
+
+	UPROPERTY(VisibleAnyWhere, Category = Animation)
+	class UAnimInstance* AnimInstance;
+
+
+protected:
+	
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -30,17 +43,16 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
-protected:
-	/** Called for forwards/backward input */
-	void MoveForward(float Value);
+public:
+	// Sets default values for this character's properties
+	AMiniGameCharacter();
 
-	/** Called for side to side input */
-	void MoveRight(float Value);
+	
+public:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
-protected:
-	// APawn interface
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	// End of APawn interface
+	virtual void SetControlMode(int32 controlMode);
 
 public:	
 	/** Returns CameraBoom subobject **/
