@@ -29,6 +29,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	float AttackRange;
+	float AttackRadius;
+
+
+	virtual void BeginPlay() override;
 protected:
 
 	/** Called for forwards/backward input */
@@ -37,13 +42,16 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
-
 	/** Handler for when a touch input begins. */
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	void AttackCheck();
+
+	virtual float TakeDamage(float DamageAmout, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser) override;
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

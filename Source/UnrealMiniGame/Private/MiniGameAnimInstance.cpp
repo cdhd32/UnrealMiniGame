@@ -36,7 +36,7 @@ void UMiniGameAnimInstance::NativeInitializeAnimation()
 		JumpStartAnimation = ThirdPersonJump_Start.Object;
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> ThirdPersonJump_Loop(TEXT("/Game/Mannequin/Animations/ThirdPersonJump_Loop.ThirdPersonJump_Loop"));
-	if (ThirdPersonRun.Succeeded())
+	if (ThirdPersonRun.Succeeded())	
 		JumpLoopAnimation = ThirdPersonJump_Loop.Object;
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> ThirdPersonJump_End(TEXT("/Game/Mannequin/Animations/ThirdPersonJump_End.ThirdPersonJump_End"));
@@ -56,6 +56,7 @@ void UMiniGameAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			IsInAir = OwnerCharater->GetMovementComponent()->IsFalling();
 		}
+
 	}
 
 	if (CurrentPawnSpeed > 0.f && IsPlayingSlotAnimation(RunAnimation, "Run"))

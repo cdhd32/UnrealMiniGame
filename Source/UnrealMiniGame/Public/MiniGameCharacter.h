@@ -31,6 +31,8 @@ class UNREALMINIGAME_API AMiniGameCharacter : public ACharacter
 	UPROPERTY(VisibleAnyWhere, Category = Animation)
 	class UAnimInstance* AnimInstance;
 
+	UPROPERTY(VisibleAnyWhere, Category = Weapon)
+	class AMiniGameWeapon* Weapon;
 
 protected:
 	

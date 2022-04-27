@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 
 #include "MiniGameAnimInstance.h"
+#include "MiniGameWeapon.h"
 
 // Sets default values
 AMiniGameCharacter::AMiniGameCharacter()
@@ -29,6 +30,7 @@ AMiniGameCharacter::AMiniGameCharacter()
 	if (PlayerModel.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(PlayerModel.Object);
 		SkeletalMesh = GetMesh();
+
 	}
 
 	SkeletalMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -97.0), FRotator(0.f, -90.f, 0.f));
@@ -94,6 +96,14 @@ void AMiniGameCharacter::BeginPlay()
 	{
 		SkeletalMesh->PlayAnimation(AnimAsset, true);
 	}*/
+
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	auto CurWeapon = GetWorld()->SpawnActor<AMiniGameWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+
+	if (nullptr != CurWeapon)
+	{
+		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	}
 }
 
 void AMiniGameCharacter::Tick(float DeltaTime)
